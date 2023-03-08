@@ -39,10 +39,37 @@ for s in size:
         K = range(num_tasks)
         V = range(num_vehicles)
         
-        Cmax = np.amax(C)
-        Mmax = np.amax(M)
-        Tmax = np.amax(T_max)
-    
+        Mmax = sum(M[k] for k in K)
+        Tmax = sum((T_max[v] - T[v]) for v in V)
+        
+        #Caculate Cmax solving a similar maximization problem
+        model = Model()
+        
+        #Decision variables
+        x = {}
+        for i in I:
+            for k in K:
+                for v in V:
+                    x[(i, k, v)] = model.binary_var(name=f'x_{i}_{k}_{v}')
+        
+        obj = model.sum(C[i][k][v] * x[(i, k, v)] for i in I for k in K for v in V)
+        model.maximize(obj)
+        
+        #Constraints
+        for i in I:
+            model.add_constraint(model.sum(x[(i, k, v)] for k in K for v in V) <= 1)
+        for k in K:
+            model.add_constraint(model.sum(x[(i, k, v)] for i in I for v in V) <= 1)
+        for v in V:
+            model.add_constraint(model.sum(x[(i, k, v)] for i in I for k in K) <= 1)
+        
+        #Solving
+        solution = model.solve()
+        Cmax = solution.get_objective_value()
+        
+        
+        
+        
         #Model definition
         model = Model()
         
