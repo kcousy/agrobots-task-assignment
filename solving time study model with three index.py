@@ -1,10 +1,10 @@
 from docplex.mp.model import Model
 import numpy as np
 
-size =   [200]
+size =   [3,5,10,20,30,40,50,75,100,150]
 
 #Parameters
-num_instances = 1
+num_instances = 20
 
 alpha = 1.0
 beta = 1.0
@@ -33,8 +33,8 @@ for s in size:
         C = np.random.randint(1, 100, size=(num_implements, num_tasks, num_vehicles))
         M = np.random.randint(100, 5000, size=num_tasks)
         T_max = np.random.randint(400, 500, size=num_vehicles)
-        T = [np.random.randint(300, T_max[t]) for t in range(num_vehicles)]
         c_prime = np.random.randint(1, 50, size=num_vehicles)
+        T = [np.random.randint(c_prime[t], T_max[t]) for t in range(num_vehicles)]
         I = range(num_implements)
         K = range(num_tasks)
         V = range(num_vehicles)
