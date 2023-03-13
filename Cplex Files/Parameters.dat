@@ -1,0 +1,7 @@
+num_implements = 180;
+num_tasks = 180;
+num_vehicles = 180;
+
+alpha = 1.0;
+beta = 1.0;
+gamma = 1.0;
