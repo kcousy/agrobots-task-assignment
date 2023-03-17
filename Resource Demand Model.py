@@ -13,7 +13,10 @@ gamma = 1.0
 
 solving_times_dic = {}
 
-
+#Maximum value for C, M and T over all the instances and time periods
+Cmax = 100
+Mmax = 2000
+Tmax = 200
 
 #loop over different sizes of matrix
 for s in size:
@@ -31,21 +34,17 @@ for s in size:
         print(f"Solving instance {n+1}/{num_instances}")
     
         #Generate random instance
-        C = np.random.randint(1, 100, size=(num_implements, num_tasks, num_vehicles))
-        M = np.random.randint(100, 5000, size=num_tasks)
+        C = np.random.randint(Cmax//2, Cmax, size=(num_implements, num_tasks, num_vehicles))
+        M = np.random.randint(Mmax//2, Mmax, size=num_tasks)
         b = np.random.randint(200, 1000, size=num_tasks)
         r = np.random.randint(50, 500, size=(num_implements, num_tasks))
-        T_max = np.random.randint(400, 500, size=num_vehicles)
+        T_max = np.random.randint(Tmax//2, Tmax, size=num_vehicles)
         c_prime = np.random.randint(1, 50, size=(num_tasks, num_vehicles))
         T = [np.random.randint(max(c_prime[t]), T_max[t]) for t in range(num_vehicles)]
         I = range(num_implements)
         K = range(num_tasks)
         V = range(num_vehicles)
         V_i = [random.sample(V, random.randint(0, num_vehicles)) for v in V]
-        
-        Mmax = sum(M[k] for k in K)
-        Tmax = sum((T_max[v] - T[v]) for v in V)
-        Cmax = sum(C[0][0][k] for k in K)
         
         
         
